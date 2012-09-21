@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from django.views.generic import list_detail
+from django.views.generic import ListView
 from django.shortcuts import get_object_or_404
 
 from announcements.models import Announcement, current_announcements_for_request
@@ -9,18 +9,9 @@ try:
 except NameError:
     from sets import Set as set   # Python 2.3 fallback
 
-
-def announcement_list(request):
-    """
-    A basic view that wraps ``django.views.list_detail.object_list`` and
-    uses ``current_announcements_for_request`` to get the current
-    announcements.
-    """
-    queryset = current_announcements_for_request(request)
-    return list_detail.object_list(request, **{
-        "queryset": queryset,
-        "allow_empty": True,
-    })
+class AnnouncementList(ListView):
+    def get_queryset(self):
+        return current_announcements_for_request(request)
 
 
 def announcement_hide(request, object_id):

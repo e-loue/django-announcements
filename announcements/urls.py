@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import *
-from django.views.generic import list_detail
+from django.views.generic import DetailView
 
 from announcements.models import Announcement
 from announcements.views import *
@@ -10,9 +10,9 @@ announcement_detail_info = {
 }
 
 urlpatterns = patterns("",
-    url(r"^(?P<object_id>\d+)/$", list_detail.object_detail,
+    url(r"^(?P<object_id>\d+)/$", DetailView.as_view(),
         announcement_detail_info, name="announcement_detail"),
     url(r"^(?P<object_id>\d+)/hide/$", announcement_hide,
         name="announcement_hide"),
-    url(r"^$", announcement_list, name="announcement_home"),
+    url(r"^$", AnnouncementList.as_view(), name="announcement_home"),
 )
